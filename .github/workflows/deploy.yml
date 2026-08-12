@@ -17,8 +17,16 @@ jobs:
 
       - run: npm install -g @pocketbasecloud/cli@latest
 
+      - name: Build
+        working-directory: web
+        env:
+          VITE_API_URL: https://my-api.pocketbasecloud.com
+        run: |
+          npm ci
+          npm run build
+
       - name: Deploy
         working-directory: web
         env:
           PB_TOKEN: ${{ secrets.PB_TOKEN }}
-        run: pb cloud frontend deploy --no-input
+        run: pb cloud frontend deploy --skip-build --no-input
